@@ -3,10 +3,15 @@ import React from 'react';
 import {render} from 'react-dom'
 import {createStore} from 'redux';
 
-const ACTIONS = {
-    SELECT_CELL: 'SELECT_CELL',
-    SET_BOARD: 'SET_BOARD',
-};
+import {
+    SELECT_CELL,
+    selectCell,
+    SET_BOARD,
+    setBoard,
+} from './actions';
+
+const BOARD_HEIGHT = 4;
+const BOARD_WIDTH = 4;
 
 const store = createStore(
     reducer,
@@ -22,7 +27,7 @@ render(
             type="text"
             value={store.getState().board}
         />
-        <Board width={4} height={4}/>
+        <Board width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
         <div>{store.getState().selected.join()}</div>
     </div>),
     document.getElementById('root')
@@ -33,14 +38,14 @@ function reducer(state: IBoggleState = {
     selected: [],
 }, action: any): IBoggleState {
     switch (action.type) {
-        case ACTIONS.SELECT_CELL:
+        case SELECT_CELL:
             return Object.assign({}, state, {
                 selected: [...state.selected, getLetterFromBoard(state.board, action.index)],
             };
-        case ACTIONS.SET_BOARD:
+        case SET_BOARD:
             return Object.assign({}, state, {
                 board: action.board,
-            };
+            });
         default:
             return state;
     }
@@ -71,20 +76,6 @@ function Cell({ index }: { index: number }) {
         {getLetterFromBoard(store.getState().board, index)}
         </td>
     );
-}
-
-function setBoard(board: string) {
-    return {
-        board,
-        type: ACTIONS.SET_BOARD,
-    }
-}
-
-function selectCell(index: number) {
-    return {
-        index,
-        type: ACTIONS.SELECT_CELL,
-    };
 }
 
 function getLetterFromBoard(board: string, index: number): string {
