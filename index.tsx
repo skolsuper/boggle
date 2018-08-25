@@ -1,6 +1,7 @@
 import R from 'ramda';
 import React from 'react';
 import {render} from 'react-dom'
+import {Provider} from "react-redux";
 import {createStore} from 'redux';
 
 import {
@@ -43,28 +44,47 @@ const store = createStore(
 
 store.dispatch(setBoard('TAP*EAKSOBRSS*XD'));
 
+class SelectedLetters extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected: false,
+        };
+    }
+
+    render() {
+        const { board, currentPath } = store.getState();
+        return (<div>
+            {currentPath.map((i) => getLetterFromBoard(board, i)).join()}
+        </div>)
+    }
+}
+
 render(
-    (<div>
-        <input
-            onChange={(e) => store.dispatch(setBoard(e.target.value))}
-            type="text"
-            value={store.getState().board}
-        />
-        <Board width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
-        <div>{store.getState().selected.join()}</div>
-    </div>),
+    (<Provider store={store}>
+        <div>
+            <input
+                onChange={(e) => store.dispatch(setBoard(e.target.value))}
+                type="text"
+                value={store.getState().board}
+            />
+            <Board width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
+            <SelectedLetters />
+        </div>
+    </Provider>),
     document.getElementById('root')
 );
 
 function reducer(state: IBoggleState = {
     board: '****************',
-    selected: [],
+    currentPath: [],
+    availableMoves: [],
 }, action: any): IBoggleState {
     switch (action.type) {
         case SELECT_CELL:
             return Object.assign({}, state, {
-                selected: [...state.selected, getLetterFromBoard(state.board, action.index)],
-            };
+                currentPath: [...state.currentPath, getLetterFromBoard(state.board, action.index)],
+            });
         case SET_BOARD:
             return Object.assign({}, state, {
                 board: action.board,
@@ -76,7 +96,8 @@ function reducer(state: IBoggleState = {
 
 interface IBoggleState {
     board: string;
-    selected: string[];
+    currentPath: number[];
+    availableMoves: number[];
 }
 
 function Board({ width, height }: { width: number, height: number }) {
