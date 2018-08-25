@@ -15,10 +15,15 @@
   "dependencies": {
     "ramda": "^0.25.0",
     "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"
   },
   "devDependencies": {
+    "@types/ramda": "^0.25.36",
+    "@types/react": "^16.4.11",
+    "@types/react-dom": "^16.0.7",
+    "@types/react-redux": "^6.0.6",
     "beefy": "^2.1.8",
     "browserify": "^16.2.2",
     "concurrently": "^4.0.0",
