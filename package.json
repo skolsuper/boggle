@@ -4,18 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p . -w",
     "lint": "tslint -p .",
+    "serve": "beefy index.js --live",
+    "start": "concurrently \"npm run build\" \"npm run serve\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "James Keys",
   "license": "UNLICENSED",
   "dependencies": {
     "ramda": "^0.25.0",
+    "react": "^16.4.2",
+    "react-redux": "^5.0.7",
     "redux": "^4.0.0"
   },
   "devDependencies": {
+    "beefy": "^2.1.8",
+    "browserify": "^16.2.2",
+    "concurrently": "^4.0.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "watchify": "^3.11.0"
   }
 }
