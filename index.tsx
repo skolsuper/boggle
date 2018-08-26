@@ -5,10 +5,10 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
 import {SELECT_CELL, SET_BOARD, setBoard, SUBMIT_WORD} from './actions';
-import {isWord, range} from './util';
-import {BOARD_HEIGHT, BOARD_WIDTH} from './constants';
 import App from './components/App';
+import {BOARD_HEIGHT, BOARD_WIDTH} from './constants';
 import {IBoggleState} from './declarations';
+import {isWord, range} from './util';
 
 const getCol = (index: number) => Math.floor(index / BOARD_HEIGHT);
 const getRow = (index: number) => R.modulo(index, BOARD_WIDTH);

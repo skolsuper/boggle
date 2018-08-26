@@ -18,7 +18,7 @@ export function selectCell(index: number) {
 
 export function submitWord(word: string) {
     return {
-        word,
         type: SUBMIT_WORD,
+        word,
     };
 }

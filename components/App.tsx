@@ -2,10 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {selectCell, submitWord} from '../actions';
-import Board from './Board';
 import {BOARD_HEIGHT, BOARD_WIDTH} from '../constants';
-import Selection from './Selection';
 import {IBoggleState} from '../declarations';
+
+import Board from './Board';
+import Selection from './Selection';
 
 function App(props: any) {
     return (

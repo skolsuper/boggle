@@ -1,5 +1,6 @@
 import R from 'ramda';
 
+/* tslint:disable-next-line:no-var-requires */
 let { words } = require('./files/dictionary.json');
 
 words = new Set(words);
