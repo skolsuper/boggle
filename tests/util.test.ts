@@ -1,9 +1,9 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import {getWords, solve} from '../util';
+import {getWords, getWordsMatchingPrefix, solve} from '../util';
 
-const words: Set<string> = new Set(['cat', 'cast', 'cot', 'cut', 'dog', 'foo']);
+const words = ['cat', 'cast', 'cot', 'cut', 'dog', 'foo'];
 
 describe('getWords', function () {
     it('should return single word if it exists', function () {
@@ -29,10 +29,25 @@ describe('getWords', function () {
     });
 });
 
+describe('getWordsMatchingPrefix', function () {
+    it('Should return the words matching given prefix', function () {
+        const result = getWordsMatchingPrefix('ca', words);
+        assert.deepEqual(result, ['cat', 'cast']);
+    });
+    it('Should handle wildcards', function () {
+        const result = getWordsMatchingPrefix('c*', words);
+        assert.deepEqual(result, ['cat', 'cast', 'cot', 'cut']);
+    });
+    it('Should return the words matching given prefix', function () {
+        const result = getWordsMatchingPrefix('ss', words);
+        assert.isEmpty(result);
+    });
+});
+
 describe('solve', function () {
     const board = 'CAT*EAKSOBRSS*XD';
     it('should find all valid words in a board', function () {
-        const solution = solve(words, board);
+        const solution = solve({ words }, board);
         assert.deepEqual(solution, ['cat']);
     })
 });

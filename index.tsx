@@ -16,15 +16,12 @@ const dictionary: { words: string[] } = require('./files/dictionary.json');
 /**
  * A map of sets of words, keyed by the length of the words in the set
  * @example {
- *   3: Set<cat,dog,foo>,
- *   4: Set<bask,card,snap>,
+ *   3: cat,dog,foo
+ *   4: bask,card,snap
  *   ...
  * }
  */
-const wordsByLength: { [key: number]: Set<string> } = R.map(
-    (words) => new Set(words),
-    R.groupBy((word) => word.length.toString(), dictionary.words),
-);
+const wordsByLength = R.groupBy(word => word.length.toString(), dictionary.words);
 
 const store = createStore(
     reducer,

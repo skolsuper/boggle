@@ -33,11 +33,19 @@ export function getLetterFromBoard(board: string, index: number): string {
     return board[index];
 }
 
-export function isWord(words: Set<string>, str: string): boolean {
-    return words.has(R.toLower(str));
+function isMatch(test: string, candidate: string): boolean {
+    const numWildcards = R.filter((char) => char === '*', Array.from(candidate)).length;
+    if (numWildcards === 0) {
+        return test === candidate;
+    }
+    return leven(test, candidate) <= numWildcards;
 }
 
-export function getWords(words: Set<string>, str: string): string[] {
+export function isWord(words: string[], str: string): boolean {
+    return R.contains(R.toLower(str), words);
+}
+
+export function getWords(words: string[], str: string): string[] {
     const candidate = R.toLower(str);
     if (!candidate.includes('*')) {
         return (isWord(words, candidate))? [candidate] : [];
@@ -46,22 +54,31 @@ export function getWords(words: Set<string>, str: string): string[] {
     return R.filter((word) => leven(word, candidate) <= numWildcards, Array.from(words));
 }
 
+export function getWordsMatchingPrefix(prefix: string, words: string[]): string[] {
+    return words
+        .map(word => ({ fragment: R.slice(0, prefix.length, word), word }))
+        .filter(({ fragment }) => isMatch(fragment, prefix))
+        .map(R.prop('word'));
+}
+
 /**
  * Return a list of possible paths from the current path, up to maxDepth long
  * @param board
- * @param candidateWords
+ * @param words
  * @param currentPath
  * @param {number} maxDepth
  * @returns {number[][]}
  * @constructor
  */
-function BFS(board: string, candidateWords: string[], currentPath: number[], maxDepth = 8): number[][] {
+function BFS(board: string, words: string[], currentPath: number[], maxDepth = 8): number[][] {
+    const stringSoFar = pathToString(board, currentPath);
+    const candidateWords = getWordsMatchingPrefix(stringSoFar, words);
     if (currentPath.length === maxDepth) {
         return [currentPath];
     }
     const nextNodes = R.difference(getAdjacent(R.last(currentPath) as number), currentPath);
     const nextPaths = nextNodes.map((index) => [...currentPath, index]);
-    return [currentPath].concat(...nextPaths.map((path) => BFS(path, maxDepth)))
+    return [currentPath].concat(...nextPaths.map((path) => BFS(board, candidateWords, path, maxDepth)))
 }
 
 export function pathToString(board: string, path: number[]): string {
@@ -69,9 +86,9 @@ export function pathToString(board: string, path: number[]): string {
 }
 
 export function solve(dictionary: {words: string[]}, board: string): string[] {
+    const allPaths = R.map((i) => BFS(board, dictionary.words, [i]), range(BOARD_HEIGHT * BOARD_WIDTH));
     return R.chain(
         (paths) => paths.map((path) => pathToString(board, path)),
-        R.map((i) => BFS([i]), range(BOARD_HEIGHT * BOARD_WIDTH))
-    )
-        .filter((word) => isWord(words, word));
+        allPaths,
+    );
 }
