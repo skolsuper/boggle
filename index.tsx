@@ -7,7 +7,7 @@ import {createStore} from 'redux';
 import {SELECT_CELL, SET_BOARD, SUBMIT_WORD, setBoard} from './actions';
 import Board from './components/Board';
 import Selection from './components/Selection';
-import {range} from './util';
+import {isWord, range} from './util';
 
 const BOARD_HEIGHT = 4;
 const BOARD_WIDTH = 4;
@@ -57,6 +57,7 @@ function reducer(
         availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
         board: '****************',
         currentPath: [],
+        words: [],
     },
     action: any): IBoggleState {
     switch (action.type) {
@@ -74,19 +75,25 @@ function reducer(
         case SET_BOARD:
             return Object.assign({}, state, {
                 board: action.board,
+                words: [],
             });
         case SUBMIT_WORD:
-            return Object.assign({}, state, {
+            const newState = Object.assign({}, state, {
                 availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
                 currentPath: [],
             });
+            if (isWord(action.word)) {
+                newState.words = [...state.words, action.word];
+            }
+            return newState;
         default:
             return state;
     }
 }
 
 interface IBoggleState {
+    availableMoves: number[];
     board: string;
     currentPath: number[];
-    availableMoves: number[];
+    words: string[];
 }
