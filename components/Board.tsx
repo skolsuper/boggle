@@ -11,7 +11,7 @@ export default class Board extends React.Component {
 
     public render() {
         const {height} = this.props;
-        return (<table>
+        return (<table className="board">
             <tbody>
             {R.map((i) => <Row {...this.props} key={i} row={i}/>, range(height))}
             </tbody>

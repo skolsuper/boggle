@@ -11,11 +11,18 @@ import WordList from './WordList';
 
 function App(props: any) {
     return (
-        <div>
-            <Board {...props} width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
-            <Selection {...props}/>
-            <WordList words={props.words}/>
-            <WordList words={props.solution}/>
+        <div className="container">
+            <h1>Play Some Boggle eh?</h1>
+            <div className="row">
+                <div className="col board-container">
+                    <Board {...props} width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
+                </div>
+                <div className="col">
+                    <Selection {...props}/>
+                    <WordList title="Your words" words={props.words}/>
+                    <WordList title="All words" words={props.solution}/>
+                </div>
+            </div>
         </div>
     );
 }
