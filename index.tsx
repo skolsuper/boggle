@@ -13,6 +13,11 @@ import {getWords, range} from './util';
 const getCol = (index: number) => Math.floor(index / BOARD_HEIGHT);
 const getRow = (index: number) => R.modulo(index, BOARD_WIDTH);
 
+/* tslint:disable-next-line:no-var-requires */
+const dictionary = require('./files/dictionary.json');
+
+const words: Set<string> = new Set(dictionary.words);
+
 /**
  * A map of the valid moves from each node.  Basically a graph.
  * @example {
@@ -71,7 +76,7 @@ function reducer(
                 words: [],
             });
         case SUBMIT_WORD:
-            const matchingWords = getWords(action.word);
+            const matchingWords = getWords(words, action.word);
             return Object.assign({}, state, {
                 availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
                 currentPath: [],
