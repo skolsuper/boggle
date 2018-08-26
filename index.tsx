@@ -23,7 +23,7 @@ const getRow = (index: number) => R.modulo(index, BOARD_WIDTH);
  *  ...
  * }
  */
-const adjacencyMap = range(BOARD_WIDTH * BOARD_HEIGHT)
+const adjacencyMap: { [key: number]: number[] } = range(BOARD_WIDTH * BOARD_HEIGHT)
     .reduce((acc: { [key: number]: number[] }, i) => {
         acc[i] = range(BOARD_WIDTH * BOARD_HEIGHT).filter((j) => {
             const distSq = Math.pow((getRow(i) - getRow(j)), 2)
@@ -59,14 +59,21 @@ render(
 
 function reducer(
     state: IBoggleState = {
-        availableMoves: [],
+        availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
         board: '****************',
         currentPath: [],
     },
     action: any): IBoggleState {
     switch (action.type) {
         case SELECT_CELL:
+            if (R.contains(action.index, state.currentPath)) {
+                return state;
+            }
+            if (!R.contains(action.index, state.availableMoves)) {
+                return state;
+            }
             return Object.assign({}, state, {
+                availableMoves: adjacencyMap[action.index],
                 currentPath: [...state.currentPath, action.index],
             });
         case SET_BOARD:
