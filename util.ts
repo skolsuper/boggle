@@ -48,12 +48,14 @@ export function getWords(words: Set<string>, str: string): string[] {
 
 /**
  * Return a list of possible paths from the current path, up to maxDepth long
+ * @param board
+ * @param candidateWords
  * @param currentPath
  * @param {number} maxDepth
  * @returns {number[][]}
  * @constructor
  */
-function BFS(currentPath: number[], maxDepth = 8): number[][] {
+function BFS(board: string, candidateWords: string[], currentPath: number[], maxDepth = 8): number[][] {
     if (currentPath.length === maxDepth) {
         return [currentPath];
     }
@@ -62,11 +64,11 @@ function BFS(currentPath: number[], maxDepth = 8): number[][] {
     return [currentPath].concat(...nextPaths.map((path) => BFS(path, maxDepth)))
 }
 
-function pathToString(board: string, path: number[]): string {
+export function pathToString(board: string, path: number[]): string {
     return path.map((i) => getLetterFromBoard(board, i)).join('');
 }
 
-export function solve(words: Set<string>, board: string): string[] {
+export function solve(dictionary: {words: string[]}, board: string): string[] {
     return R.chain(
         (paths) => paths.map((path) => pathToString(board, path)),
         R.map((i) => BFS([i]), range(BOARD_HEIGHT * BOARD_WIDTH))
