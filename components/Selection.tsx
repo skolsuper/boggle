@@ -17,11 +17,11 @@ class Selection extends React.Component {
         };
     }
 
-    render() {
+    public render() {
         const {board, currentPath} = this.props;
         return (<div>
             {currentPath.map((i) => getLetterFromBoard(board, i)).join('')}
-        </div>)
+        </div>);
     }
 }
 

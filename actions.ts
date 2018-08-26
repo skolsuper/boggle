@@ -5,7 +5,7 @@ export function setBoard(board: string) {
     return {
         board,
         type: SET_BOARD,
-    }
+    };
 }
 
 export function selectCell(index: number) {

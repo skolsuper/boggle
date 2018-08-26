@@ -1,13 +1,13 @@
 import R from 'ramda';
 import React from 'react';
-import {render} from 'react-dom'
+import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
 import {SELECT_CELL, SET_BOARD, setBoard} from './actions';
-import {range} from './util';
 import Board from './components/Board';
 import Selection from './components/Selection';
+import {range} from './util';
 
 const BOARD_HEIGHT = 4;
 const BOARD_WIDTH = 4;
@@ -57,11 +57,13 @@ render(
     document.getElementById('root'),
 );
 
-function reducer(state: IBoggleState = {
-    board: '****************',
-    currentPath: [],
-    availableMoves: [],
-}, action: any): IBoggleState {
+function reducer(
+    state: IBoggleState = {
+        availableMoves: [],
+        board: '****************',
+        currentPath: [],
+    },
+    action: any): IBoggleState {
     switch (action.type) {
         case SELECT_CELL:
             return Object.assign({}, state, {
@@ -81,4 +83,3 @@ interface IBoggleState {
     currentPath: number[];
     availableMoves: number[];
 }
-
