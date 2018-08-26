@@ -1,15 +1,10 @@
 import R from 'ramda';
 import React from 'react';
 import {render} from 'react-dom'
-import {Provider} from "react-redux";
+import {connect, Provider} from "react-redux";
 import {createStore} from 'redux';
 
-import {
-    SELECT_CELL,
-    selectCell,
-    SET_BOARD,
-    setBoard,
-} from './actions';
+import {SELECT_CELL, selectCell, SET_BOARD, setBoard,} from './actions';
 
 const BOARD_HEIGHT = 4;
 const BOARD_WIDTH = 4;
@@ -44,8 +39,28 @@ const store = createStore(
 
 store.dispatch(setBoard('TAP*EAKSOBRSS*XD'));
 
+class Board extends React.Component {
+    public props: { width: number, height: number };
+
+    constructor(props: { width: number, height: number }) {
+        super(props);
+        console.log('Board', props);
+    }
+
+    render() {
+        const { width, height } = this.props;
+        return (<table>
+            <tbody>
+            {R.map((i) => <Row key={i} row={i} width={width} height={height}/>, range(height))}
+            </tbody>
+        </table>);
+    }
+}
+const mapStateToProps = ({ board }: { board: string }) => ({ board });
+const WrappedBoard = connect(mapStateToProps, { selectCell })(Board);
+
 class SelectedLetters extends React.Component {
-    constructor(props) {
+    constructor(props: {}) {
         super(props);
         this.state = {
             selected: false,
@@ -61,18 +76,18 @@ class SelectedLetters extends React.Component {
 }
 
 render(
-    (<Provider store={store}>
-        <div>
-            <input
-                onChange={(e) => store.dispatch(setBoard(e.target.value))}
-                type="text"
-                value={store.getState().board}
-            />
-            <Board width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
-            <SelectedLetters />
-        </div>
-    </Provider>),
-    document.getElementById('root')
+    (<div>
+        <Provider store={store}>
+            <WrappedBoard width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
+        </Provider>
+        <input
+            onChange={(e) => store.dispatch(setBoard(e.target.value))}
+            type="text"
+            value={store.getState().board}
+        />
+        <SelectedLetters/>
+    </div>),
+    document.getElementById('root'),
 );
 
 function reducer(state: IBoggleState = {
@@ -98,14 +113,6 @@ interface IBoggleState {
     board: string;
     currentPath: number[];
     availableMoves: number[];
-}
-
-function Board({ width, height }: { width: number, height: number }) {
-    return (<table>
-        <tbody>
-        { R.map((i) => <Row key={i} row={i} width={width} height={height} />, R.range(0, height))}
-        </tbody>
-    </table>);
 }
 
 function Row({ row, width, height }: { row: number, width: number, height: number }) {
