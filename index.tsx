@@ -44,6 +44,7 @@ function reducer(
         availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
         board: '****************',
         currentPath: [],
+        gameOver: false,
         solution: [],
         timeRemaining: GAME_TIME_MS,
         words: [],
@@ -51,6 +52,9 @@ function reducer(
     action: any): IBoggleState {
     switch (action.type) {
         case SELECT_CELL:
+            if (state.gameOver) {
+                return state;
+            }
             if (R.contains(action.index, state.currentPath)) {
                 return state;
             }
@@ -69,8 +73,8 @@ function reducer(
         case SOLVE_PUZZLE:
             clearInterval(countdown);
             return Object.assign({}, state, {
+                gameOver: true,
                 solution: solve(dictionary.words, state.board),
-                timeRemaining: 0,
             });
         case SUBMIT_WORD:
             const matchingWords = getWords(wordsByLength[action.word.length], action.word);
@@ -81,12 +85,16 @@ function reducer(
             });
         case TICK:
             const timeRemaining = state.timeRemaining - action.amount;
-            let solution: string[] = [];
             if (timeRemaining <= 0) {
                 clearInterval(countdown);
-                solution = solve(dictionary.words, state.board);
+                return Object.assign({}, state, {
+                    availableMoves: [],
+                    gameOver: true,
+                    solution: solve(dictionary.words, state.board),
+                    timeRemaining,
+                });
             }
-            return Object.assign({}, state, { solution, timeRemaining });
+            return Object.assign({}, state, { timeRemaining });
         default:
             return state;
     }

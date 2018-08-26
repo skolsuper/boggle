@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {selectCell, submitWord} from '../actions';
+import {selectCell, solvePuzzle, submitWord} from '../actions';
 import {BOARD_HEIGHT, BOARD_WIDTH} from '../constants';
 import {IBoggleState} from '../declarations';
 
@@ -21,6 +21,7 @@ function App(props: any) {
                 </div>
                 <div className="col">
                     <Countdown timeRemaining={props.timeRemaining}/>
+                    <button className="btn btn-success btn-lg btn-block" onClick={props.solvePuzzle}>Solve</button>
                     <WordList title="Found" words={props.words}/>
                     <WordList title="All words" words={props.solution}/>
                 </div>
@@ -30,4 +31,4 @@ function App(props: any) {
 }
 
 const mapStateToProps = ({availableMoves, currentPath, board, solution, timeRemaining, words}: IBoggleState) => ({availableMoves, board, currentPath, solution, timeRemaining, words});
-export default connect(mapStateToProps, {selectCell, submitWord})(App);
+export default connect(mapStateToProps, {selectCell, solvePuzzle, submitWord})(App);
