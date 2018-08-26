@@ -18,7 +18,7 @@
 }
 
 .boggle-cell[data-available=true] {
-    background-color: green;
+    background-color: beige;
 }
 
 .timer {
