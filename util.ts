@@ -30,6 +30,9 @@ function getAdjacent(index: number): number[] {
 }
 
 export function getAvailableMoves(path: number[], maxLength = 8) {
+    if (R.isEmpty(path)) {
+        return range(BOARD_WIDTH * BOARD_HEIGHT);
+    }
     return (path.length < maxLength) ?
         R.difference(getAdjacent(R.last(path) as number), path) : [];
 }
@@ -38,12 +41,12 @@ export function getLetterFromBoard(board: string, index: number): string {
     return board[index];
 }
 
-function isMatch(test: string, candidate: string): boolean {
-    const numWildcards = R.filter((char) => char === '*', Array.from(candidate)).length;
+function isMatch(test: string): (candidate: string) => boolean {
+    const numWildcards = R.filter((char) => char === '*', Array.from(test)).length;
     if (numWildcards === 0) {
-        return test === candidate;
+        return R.equals(test);
     }
-    return leven(test, candidate) <= numWildcards;
+    return (candidate) => leven(test, candidate) <= numWildcards;
 }
 
 export function isWord(words: string[], str: string): boolean {
@@ -60,9 +63,10 @@ export function getWords(words: string[], str: string): string[] {
 }
 
 export function getWordsMatchingPrefix(prefix: string, words: string[]): string[] {
+    const isMatchPrefix = isMatch(prefix);
     return words
         .map(word => ({ fragment: R.slice(0, prefix.length, word), word }))
-        .filter(({ fragment }) => isMatch(fragment, prefix))
+        .filter(({ fragment }) => isMatchPrefix(fragment))
         .map(R.prop('word'));
 }
 
@@ -72,34 +76,37 @@ export function getWordsMatchingPrefix(prefix: string, words: string[]): string[
  * @param words
  * @param currentPath
  * @param {number} maxLength
- * @returns {number[][]}
- * @constructor
+ * @yields {number[]}
  */
-function BFS(board: string, words: string[], currentPath: number[], maxLength = 8): number[][] {
-    if (currentPath.length === maxLength) {
-        return [currentPath];
-    }
+function* BFS(board: string, words: string[], currentPath: number[], maxLength = 8): IterableIterator<string> {
     const stringSoFar = pathToString(board, currentPath);
+    if (currentPath.length > 2) {
+        for (const word of getWords(words, stringSoFar)) {
+            yield word;
+        }
+    }
     const candidateWords = getWordsMatchingPrefix(stringSoFar, words);
     if (candidateWords.length === 0) {
-        return [];
+        return;
+    }
+    if (isWord(words, stringSoFar)) {
+        yield stringSoFar;
     }
     const nextNodes = getAvailableMoves(currentPath, maxLength);
-    return [currentPath].concat(...nextNodes
-        .map(index => [...currentPath, index])
-        .map(path => BFS(board, candidateWords, path, maxLength)),
-    );
+    const nextPaths = nextNodes.map(index => [...currentPath, index]);
+    for (const path of nextPaths) {
+        yield* BFS(board, candidateWords, path, maxLength);
+    }
 }
 
 export function pathToString(board: string, path: number[]): string {
-    return path.map((i) => getLetterFromBoard(board, i)).join('');
+    return path.map((i) => getLetterFromBoard(board, i)).map(R.toLower).join('');
 }
 
-export function solve(dictionary: {words: string[]}, board: string): string[] {
-    const allPaths = R.map((i) => BFS(board, dictionary.words, [i]), range(BOARD_HEIGHT * BOARD_WIDTH));
-    return R.chain(
-        (paths) => paths.map((path) => pathToString(board, path)),
-        allPaths,
-    )
-        .filter(word => word.length > 2);
+export function solve(words: string[], board: string): string[] {
+    const solution = [];
+    for (const word of BFS(board, words, [])) {
+        solution.push(word);
+    }
+    return R.uniq(solution);
 }
