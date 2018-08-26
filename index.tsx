@@ -8,7 +8,7 @@ import {SELECT_CELL, SET_BOARD, setBoard, SUBMIT_WORD} from './actions';
 import App from './components/App';
 import {BOARD_HEIGHT, BOARD_WIDTH} from './constants';
 import {IBoggleState} from './declarations';
-import {getAdjacent, getWords, range} from './util';
+import {getAvailableMoves, getWords, range} from './util';
 
 /* tslint:disable-next-line:no-var-requires */
 const dictionary: { words: string[] } = require('./files/dictionary.json');
@@ -54,8 +54,7 @@ function reducer(
                 return state;
             }
             const currentPath = [...state.currentPath, action.index];
-            const availableMoves =  (currentPath.length === 8) ? // No words in dictionary longer than 8 chars
-                [] : R.difference(getAdjacent(action.index), currentPath);
+            const availableMoves = getAvailableMoves(currentPath);
             return Object.assign({}, state, { availableMoves, currentPath });
         case SET_BOARD:
             return Object.assign({}, state, {
