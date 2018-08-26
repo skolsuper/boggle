@@ -1,9 +1,10 @@
+import leven from 'leven';
 import R from 'ramda';
 
 /* tslint:disable-next-line:no-var-requires */
-let { words } = require('./files/dictionary.json');
+const dictionary = require('./files/dictionary.json');
 
-words = new Set(words);
+const words: Set<string> = new Set(dictionary);
 
 export const range: (to: number) => number[] = R.range(0);
 
@@ -13,4 +14,12 @@ export function getLetterFromBoard(board: string, index: number): string {
 
 export function isWord(str: string): boolean {
     return words.has(R.toLower(str));
+}
+
+export function getWords(candidate: string): string[] {
+    if (!R.contains('*', candidate)) {
+        return (isWord(candidate))? [candidate] : [];
+    }
+    const numWildcards = R.filter((char) => char === '*', Array.from(candidate)).length;
+    return R.filter((word) => leven(word, candidate) < numWildcards, Array.from(words));
 }

@@ -13,6 +13,7 @@
   "author": "James Keys",
   "license": "UNLICENSED",
   "dependencies": {
+    "leven": "^2.1.0",
     "ramda": "^0.25.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
@@ -20,6 +21,7 @@
     "redux": "^4.0.0"
   },
   "devDependencies": {
+    "@types/leven": "^2.1.1",
     "@types/ramda": "^0.25.36",
     "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.7",
