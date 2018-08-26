@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p . && browserify index.js -o bundle.js",
     "lint": "tslint -p .",
-    "serve": "beefy index.js --live",
+    "serve": "beefy index.js:bundle.js --live",
     "start": "concurrently \"npm run watch\" \"npm run serve\"",
     "test": "npm run build & mocha tests/*.test.js",
     "watch": "tsc -p . -w"
