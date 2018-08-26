@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, setBoard} from './actions';
+import {SELECT_CELL, SET_BOARD, SUBMIT_WORD, setBoard} from './actions';
 import Board from './components/Board';
 import Selection from './components/Selection';
 import {range} from './util';
@@ -45,11 +45,6 @@ render(
         <Provider store={store}>
             <Board width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
         </Provider>
-        <input
-            onChange={(e) => store.dispatch(setBoard(e.target.value))}
-            type="text"
-            value={store.getState().board}
-        />
         <Provider store={store}>
             <Selection/>
         </Provider>
@@ -80,6 +75,9 @@ function reducer(
             return Object.assign({}, state, {
                 board: action.board,
             });
+        case SUBMIT_WORD:
+            console.log('Submit', state, action);
+            return state;
         default:
             return state;
     }
