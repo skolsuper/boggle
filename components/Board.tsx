@@ -6,20 +6,16 @@ import {selectCell} from '../actions';
 import {range} from '../util';
 
 import Row from "./Row";
+import {ActionCreator} from "redux";
 
 class Board extends React.Component {
-    public props: { width: number, height: number };
-
-    constructor(props: { width: number, height: number }) {
-        super(props);
-        console.log('Board', props);
-    }
+    public props: { board: string, width: number, height: number, selectCell: ActionCreator<number> };
 
     render() {
-        const {width, height} = this.props;
+        const {board, width, height, selectCell} = this.props;
         return (<table>
             <tbody>
-            {R.map((i) => <Row key={i} row={i} width={width} height={height}/>, range(height))}
+            {R.map((i) => <Row board={board} key={i} row={i} width={width} height={height} selectCell={selectCell}/>, range(height))}
             </tbody>
         </table>);
     }
