@@ -4,10 +4,11 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, SUBMIT_WORD, setBoard} from './actions';
+import {SELECT_CELL, SET_BOARD, setBoard, SUBMIT_WORD} from './actions';
 import {isWord, range} from './util';
 import {BOARD_HEIGHT, BOARD_WIDTH} from './constants';
-import App from "./components/App";
+import App from './components/App';
+import {IBoggleState} from './declarations';
 
 const getCol = (index: number) => Math.floor(index / BOARD_HEIGHT);
 const getRow = (index: number) => R.modulo(index, BOARD_WIDTH);
@@ -81,11 +82,4 @@ function reducer(
         default:
             return state;
     }
-}
-
-interface IBoggleState {
-    availableMoves: number[];
-    board: string;
-    currentPath: number[];
-    words: string[];
 }
