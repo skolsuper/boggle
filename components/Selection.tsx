@@ -11,15 +11,6 @@ class Selection extends React.Component {
         currentPath: number[],
         dispatch: Dispatch,
     };
-    public state: {
-        selected: boolean,
-    };
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            selected: false,
-        };
-    }
 
     public render() {
         const {board, currentPath, dispatch} = this.props;
