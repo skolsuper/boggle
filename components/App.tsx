@@ -15,9 +15,10 @@ function App(props: any) {
             <Board {...props} width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
             <Selection {...props}/>
             <WordList words={props.words}/>
+            <WordList words={props.solution}/>
         </div>
     );
 }
 
-const mapStateToProps = ({availableMoves, currentPath, board, words}: IBoggleState) => ({availableMoves, currentPath, board, words});
+const mapStateToProps = ({availableMoves, currentPath, board, solution, words}: IBoggleState) => ({availableMoves, board, currentPath, solution, words});
 export default connect(mapStateToProps, {selectCell, submitWord})(App);

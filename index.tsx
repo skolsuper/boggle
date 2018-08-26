@@ -4,11 +4,11 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, setBoard, SUBMIT_WORD} from './actions';
+import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, solvePuzzle, SUBMIT_WORD} from './actions';
 import App from './components/App';
-import {BOARD_HEIGHT, BOARD_WIDTH} from './constants';
+import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from './constants';
 import {IBoggleState} from './declarations';
-import {getAvailableMoves, getWords, range} from './util';
+import {getAvailableMoves, getWords, range, solve} from './util';
 
 /* tslint:disable-next-line:no-var-requires */
 const dictionary: { words: string[] } = require('./files/dictionary.json');
@@ -37,11 +37,14 @@ render(
     document.getElementById('root'),
 );
 
+setTimeout(() => store.dispatch(solvePuzzle()), GAME_TIME_MS);
+
 function reducer(
     state: IBoggleState = {
         availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
         board: '****************',
         currentPath: [],
+        solution: [],
         words: [],
     },
     action: any): IBoggleState {
@@ -60,6 +63,10 @@ function reducer(
             return Object.assign({}, state, {
                 board: action.board,
                 words: [],
+            });
+        case SOLVE_PUZZLE:
+            return Object.assign({}, state, {
+                solution: solve(dictionary.words, state.board),
             });
         case SUBMIT_WORD:
             const matchingWords = getWords(wordsByLength[action.word.length], action.word);
