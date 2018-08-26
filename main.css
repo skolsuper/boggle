@@ -19,3 +19,7 @@
 .boggle-cell[data-available=true] {
     background-color: green;
 }
+
+.timer {
+    font-size: xx-large;
+}

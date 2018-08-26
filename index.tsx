@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, solvePuzzle, SUBMIT_WORD, TICK, tick} from './actions';
+import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
 import App from './components/App';
 import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from './constants';
 import {IBoggleState} from './declarations';
@@ -82,7 +82,7 @@ function reducer(
         case TICK:
             const timeRemaining = state.timeRemaining - action.amount;
             let solution: string[] = [];
-            if (timeRemaining < 0) {
+            if (timeRemaining <= 0) {
                 clearInterval(countdown);
                 solution = solve(dictionary.words, state.board);
             }
