@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p . -w",
+    "build": "tsc -p .",
     "lint": "tslint -p .",
     "serve": "beefy index.js --live",
-    "start": "concurrently \"npm run build\" \"npm run serve\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"npm run watch\" \"npm run serve\"",
+    "test": "npm run build & mocha tests/*.test.js",
+    "watch": "tsc -p . -w"
   },
   "author": "James Keys",
   "license": "UNLICENSED",
@@ -21,14 +22,18 @@
     "redux": "^4.0.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.4",
     "@types/leven": "^2.1.1",
+    "@types/mocha": "^5.2.5",
     "@types/ramda": "^0.25.36",
     "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.6",
     "beefy": "^2.1.8",
     "browserify": "^16.2.2",
+    "chai": "^4.1.2",
     "concurrently": "^4.0.0",
+    "mocha": "^5.2.0",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1",
     "watchify": "^3.11.0"
