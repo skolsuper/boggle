@@ -12,14 +12,14 @@ import WordList from './WordList';
 function App(props: any) {
     return (
         <div className="container">
-            <h1>Play Some Boggle eh?</h1>
+            <h1 className="display-1 text-center">It's like Boggle</h1>
             <div className="row">
                 <div className="col board-container">
                     <Board {...props} width={BOARD_WIDTH} height={BOARD_HEIGHT}/>
+                    <Selection {...props}/>
                 </div>
                 <div className="col">
-                    <Selection {...props}/>
-                    <WordList title="Your words" words={props.words}/>
+                    <WordList title="Found" words={props.words}/>
                     <WordList title="All words" words={props.solution}/>
                 </div>
             </div>

@@ -5,9 +5,10 @@ export default function WordList({ title, words }: { title: string, words: strin
     return (
         <div>
             <h2>{(words.length)? title : ''}</h2>
-            <ul>
-                {R.map((word) => <li key={word}>{word}</li>, words)}
+            <ul className="list-group">
+                {R.map((word) => <li className="list-group-item" key={word}>{word}</li>, words)}
             </ul>
+            <p>Count: {words.length}</p>
         </div>
     );
 }
