@@ -73,6 +73,7 @@ function reducer(
         case SOLVE_PUZZLE:
             clearInterval(countdown);
             return Object.assign({}, state, {
+                availableMoves: [],
                 gameOver: true,
                 solution: solve(dictionary.words, state.board),
             });
