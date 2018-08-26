@@ -77,12 +77,8 @@ export function getWordsMatchingPrefix(prefix: string, words: string[]): string[
 }
 
 /**
- * Return a list of possible paths from the current path, up to maxLength long
- * @param board
- * @param words
- * @param currentPath
- * @param {number} maxLength
- * @yields {number[]}
+ * Generate all the words from a board that start with the given path.
+ * @yields {string}
  */
 function* BFS(board: string, words: string[], currentPath: number[], maxLength: number): IterableIterator<string> {
     const stringSoFar = pathToString(board, currentPath);

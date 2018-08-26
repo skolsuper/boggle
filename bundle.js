@@ -35070,12 +35070,12 @@ function getWordsMatchingPrefix(prefix, words) {
 }
 exports.getWordsMatchingPrefix = getWordsMatchingPrefix;
 /**
- * Return a list of possible paths from the current path, up to maxLength long
+ * Generate all the words from a board that start with the given path.
  * @param board
  * @param words
  * @param currentPath
  * @param {number} maxLength
- * @yields {number[]}
+ * @yields {string}
  */
 function BFS(board, words, currentPath, maxLength) {
     var e_1, _a, e_2, _b, stringSoFar, _c, _d, word, e_1_1, candidateWords, nextNodes, nextPaths, nextPaths_1, nextPaths_1_1, path, e_2_1;
