@@ -1,7 +1,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import { getWords } from '../util';
+import {getWords, solve} from '../util';
 
 const words: Set<string> = new Set(['cat', 'cast', 'cot', 'cut', 'dog', 'foo']);
 
@@ -27,4 +27,12 @@ describe('getWords', function () {
         const result = getWords(words, 'C*T');
         assert.deepEqual(result, ['cat', 'cot', 'cut']);
     });
+});
+
+describe('solve', function () {
+    const board = 'CAT*EAKSOBRSS*XD';
+    it('should find all valid words in a board', function () {
+        const solution = solve(words, board);
+        assert.deepEqual(solution, ['cat']);
+    })
 });

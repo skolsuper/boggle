@@ -45,3 +45,31 @@ export function getWords(words: Set<string>, str: string): string[] {
     const numWildcards = R.filter((char) => char === '*', Array.from(candidate)).length;
     return R.filter((word) => leven(word, candidate) <= numWildcards, Array.from(words));
 }
+
+/**
+ * Return a list of possible paths from the current path, up to maxDepth long
+ * @param currentPath
+ * @param {number} maxDepth
+ * @returns {number[][]}
+ * @constructor
+ */
+function BFS(currentPath: number[], maxDepth = 8): number[][] {
+    if (currentPath.length === maxDepth) {
+        return [currentPath];
+    }
+    const nextNodes = R.difference(getAdjacent(R.last(currentPath) as number), currentPath);
+    const nextPaths = nextNodes.map((index) => [...currentPath, index]);
+    return [currentPath].concat(...nextPaths.map((path) => BFS(path, maxDepth)))
+}
+
+function pathToString(board: string, path: number[]): string {
+    return path.map((i) => getLetterFromBoard(board, i)).join('');
+}
+
+export function solve(words: Set<string>, board: string): string[] {
+    return R.chain(
+        (paths) => paths.map((path) => pathToString(board, path)),
+        R.map((i) => BFS([i]), range(BOARD_HEIGHT * BOARD_WIDTH))
+    )
+        .filter((word) => isWord(words, word));
+}
