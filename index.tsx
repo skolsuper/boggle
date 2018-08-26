@@ -5,8 +5,9 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
 import {SELECT_CELL, SET_BOARD, setBoard} from './actions';
-import {getLetterFromBoard, range} from './util';
+import {range} from './util';
 import Board from './components/Board';
+import Selection from './components/Selection';
 
 const BOARD_HEIGHT = 4;
 const BOARD_WIDTH = 4;
@@ -39,22 +40,6 @@ const store = createStore(
 
 store.dispatch(setBoard('TAP*EAKSOBRSS*XD'));
 
-class SelectedLetters extends React.Component {
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            selected: false,
-        };
-    }
-
-    render() {
-        const { board, currentPath } = store.getState();
-        return (<div>
-            {currentPath.map((i) => getLetterFromBoard(board, i)).join()}
-        </div>)
-    }
-}
-
 render(
     (<div>
         <Provider store={store}>
@@ -65,7 +50,9 @@ render(
             type="text"
             value={store.getState().board}
         />
-        <SelectedLetters/>
+        <Provider store={store}>
+            <Selection/>
+        </Provider>
     </div>),
     document.getElementById('root'),
 );
@@ -78,7 +65,7 @@ function reducer(state: IBoggleState = {
     switch (action.type) {
         case SELECT_CELL:
             return Object.assign({}, state, {
-                currentPath: [...state.currentPath, getLetterFromBoard(state.board, action.index)],
+                currentPath: [...state.currentPath, action.index],
             });
         case SET_BOARD:
             return Object.assign({}, state, {

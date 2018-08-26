@@ -9,13 +9,13 @@ import Row from "./Row";
 import {ActionCreator} from "redux";
 
 class Board extends React.Component {
-    public props: { board: string, width: number, height: number, selectCell: ActionCreator<number> };
+    public props!: { board: string, width: number, height: number, selectCell: ActionCreator<number> };
 
     render() {
-        const {board, width, height, selectCell} = this.props;
+        const {height} = this.props;
         return (<table>
             <tbody>
-            {R.map((i) => <Row board={board} key={i} row={i} width={width} height={height} selectCell={selectCell}/>, range(height))}
+            {R.map((i) => <Row {...this.props} key={i} row={i}/>, range(height))}
             </tbody>
         </table>);
     }
