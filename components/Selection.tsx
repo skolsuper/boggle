@@ -9,7 +9,7 @@ export default function Selection(props: {board: string, currentPath: number[], 
     return (
         <form onSubmit={(e) => { submitWord(stagedWord); e.preventDefault(); }}>
             <input type="text" value={stagedWord} />
-            <button type="submit">Submit</button>
+            <button className="btn btn-primary" type="submit">Submit</button>
         </form>
     );
 }

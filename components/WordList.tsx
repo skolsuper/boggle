@@ -8,7 +8,7 @@ export default function WordList({ title, words }: { title: string, words: strin
             <ul className="list-group">
                 {R.map((word) => <li className="list-group-item" key={word}>{word}</li>, words)}
             </ul>
-            <p>Count: {words.length}</p>
+            <p>{(words.length)? 'Count: ' + words.length : ''}</p>
         </div>
     );
 }

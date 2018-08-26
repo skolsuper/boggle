@@ -2,6 +2,7 @@ export const SELECT_CELL = 'SELECT_CELL';
 export const SET_BOARD = 'SET_BOARD';
 export const SOLVE_PUZZLE = 'SOLVE_PUZZLE';
 export const SUBMIT_WORD = 'SUBMIT_WORD';
+export const TICK = 'TICK';
 
 export function setBoard(board: string) {
     return {
@@ -28,4 +29,11 @@ export function submitWord(word: string) {
         type: SUBMIT_WORD,
         word,
     };
+}
+
+export function tick(amount: number) {
+    return {
+        amount,
+        type: TICK,
+    }
 }

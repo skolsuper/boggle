@@ -54,6 +54,9 @@ export function isWord(words: string[], str: string): boolean {
 }
 
 export function getWords(words: string[], str: string): string[] {
+    if (R.isEmpty(str)) {
+        return [];
+    }
     const candidate = R.toLower(str);
     if (!candidate.includes('*')) {
         return (isWord(words, candidate))? [candidate] : [];

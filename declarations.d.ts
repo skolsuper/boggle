@@ -3,5 +3,6 @@ export interface IBoggleState {
     board: string;
     currentPath: number[];
     solution: string[];
+    timeRemaining: number;
     words: string[];
 }

@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, solvePuzzle, SUBMIT_WORD} from './actions';
+import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, solvePuzzle, SUBMIT_WORD, TICK, tick} from './actions';
 import App from './components/App';
 import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from './constants';
 import {IBoggleState} from './declarations';
@@ -37,7 +37,7 @@ render(
     document.getElementById('root'),
 );
 
-setTimeout(() => store.dispatch(solvePuzzle()), GAME_TIME_MS);
+const countdown = setInterval(() => store.dispatch(tick(1000)), 1000);
 
 function reducer(
     state: IBoggleState = {
@@ -45,6 +45,7 @@ function reducer(
         board: '****************',
         currentPath: [],
         solution: [],
+        timeRemaining: GAME_TIME_MS,
         words: [],
     },
     action: any): IBoggleState {
@@ -62,11 +63,14 @@ function reducer(
         case SET_BOARD:
             return Object.assign({}, state, {
                 board: action.board,
+                timeRemaining: GAME_TIME_MS,
                 words: [],
             });
         case SOLVE_PUZZLE:
+            clearInterval(countdown);
             return Object.assign({}, state, {
                 solution: solve(dictionary.words, state.board),
+                timeRemaining: 0,
             });
         case SUBMIT_WORD:
             const matchingWords = getWords(wordsByLength[action.word.length], action.word);
@@ -75,6 +79,14 @@ function reducer(
                 currentPath: [],
                 words: R.uniq([...state.words, ...matchingWords]),
             });
+        case TICK:
+            const timeRemaining = state.timeRemaining - action.amount;
+            let solution: string[] = [];
+            if (timeRemaining < 0) {
+                clearInterval(countdown);
+                solution = solve(dictionary.words, state.board);
+            }
+            return Object.assign({}, state, { solution, timeRemaining });
         default:
             return state;
     }
