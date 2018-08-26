@@ -68,7 +68,7 @@ var WordList_1 = __importDefault(require("./WordList"));
 var Countdown_1 = __importDefault(require("./Countdown"));
 function App(props) {
     return (react_1.default.createElement("div", { className: "container" },
-        react_1.default.createElement("h1", { className: "display-1 text-center" }, "Play Boggle"),
+        react_1.default.createElement("h1", { className: "display-1 text-center" }, "Play Chaoggle"),
         react_1.default.createElement("div", { className: "row" },
             react_1.default.createElement("div", { className: "col board-container" },
                 react_1.default.createElement(Board_1.default, __assign({}, props, { width: constants_1.BOARD_WIDTH, height: constants_1.BOARD_HEIGHT })),
@@ -35002,6 +35002,7 @@ var constants_1 = require("./constants");
 exports.range = ramda_1.default.range(0);
 var getCol = function (index) { return Math.floor(index / constants_1.BOARD_HEIGHT); };
 var getRow = function (index) { return ramda_1.default.modulo(index, constants_1.BOARD_WIDTH); };
+var removeEmpty = ramda_1.default.reject(ramda_1.default.isEmpty);
 /**
  * A map of the valid moves from each node.  Basically a graph.
  * @example {
@@ -35172,7 +35173,7 @@ function solve(words, board) {
         }
         finally { if (e_3) throw e_3.error; }
     }
-    return ramda_1.default.uniq(solution);
+    return removeEmpty(ramda_1.default.uniq(solution));
 }
 exports.solve = solve;
 

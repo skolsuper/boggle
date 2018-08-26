@@ -8,6 +8,8 @@ export const range: (to: number) => number[] = R.range(0);
 const getCol = (index: number) => Math.floor(index / BOARD_HEIGHT);
 const getRow = (index: number) => R.modulo(index, BOARD_WIDTH);
 
+const removeEmpty = R.reject(R.isEmpty);
+
 /**
  * A map of the valid moves from each node.  Basically a graph.
  * @example {
@@ -112,5 +114,5 @@ export function solve(words: string[], board: string): string[] {
     for (const word of BFS(board, words, [], MAX_WORD_LENGTH)) {
         solution.push(word);
     }
-    return R.uniq(solution);
+    return removeEmpty(R.uniq(solution));
 }
