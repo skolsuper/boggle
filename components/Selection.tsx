@@ -1,11 +1,10 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
 
 import {submitWord} from '../actions';
 import {getLetterFromBoard} from '../util';
 
-class Selection extends React.Component {
+export default class Selection extends React.Component {
     public readonly props!: {
         board: string,
         currentPath: number[],
@@ -23,6 +22,3 @@ class Selection extends React.Component {
         );
     }
 }
-
-const mapStateToProps = ({board, currentPath}: { board: string, currentPath: number[] }) => ({board, currentPath});
-export default connect(mapStateToProps)(Selection);

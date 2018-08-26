@@ -1,14 +1,12 @@
 import R from 'ramda';
 import React from 'react';
-import {connect} from 'react-redux';
 import {ActionCreator} from 'redux';
 
-import {selectCell} from '../actions';
 import {range} from '../util';
 
 import Row from './Row';
 
-class Board extends React.Component {
+export default class Board extends React.Component {
     public props!: { availableMoves: number[], board: string, width: number, height: number, selectCell: ActionCreator<number> };
 
     public render() {
@@ -20,6 +18,3 @@ class Board extends React.Component {
         </table>);
     }
 }
-
-const mapStateToProps = ({availableMoves, board}: { availableMoves: number[], board: string }) => ({availableMoves, board});
-export default connect(mapStateToProps, {selectCell})(Board);
