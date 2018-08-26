@@ -1,6 +1,6 @@
 # Chaoggle
 
-Boggle with a wildcard.  Play Chaoggle at [skolsuper.github.io/boggle](https://skolsuper.github.io/boggle)
+Boggle with a wildcard.  Play Chaoggle at [skolsuper.github.io/boggle](https://skolsuper.github.io/boggle), or click "Solve" to let the computer do it
 
 ### Prerequisites
 
