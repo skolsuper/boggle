@@ -76,8 +76,10 @@ function reducer(
                 board: action.board,
             });
         case SUBMIT_WORD:
-            console.log('Submit', state, action);
-            return state;
+            return Object.assign({}, state, {
+                availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
+                currentPath: [],
+            });
         default:
             return state;
     }
