@@ -16,7 +16,8 @@ export function isWord(str: string): boolean {
     return words.has(R.toLower(str));
 }
 
-export function getWords(candidate: string): string[] {
+export function getWords(str: string): string[] {
+    const candidate = R.toLower(str);
     if (!candidate.includes('*')) {
         return (isWord(candidate))? [candidate] : [];
     }

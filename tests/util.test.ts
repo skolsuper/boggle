@@ -14,6 +14,10 @@ describe('getWords', function () {
     });
     it('should return a list of matching words in case of wildcard', function () {
         const result = getWords('c*t');
-        assert.deepEqual(result, ['cot', 'cat', 'cut']);
+        assert.deepEqual(result, ['cat', 'cot', 'cut']);
+    });
+    it('should be case insensitive', function () {
+        const result = getWords('C*T');
+        assert.deepEqual(result, ['cat', 'cot', 'cut']);
     });
 });
