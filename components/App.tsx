@@ -13,7 +13,7 @@ import Countdown from "./Countdown";
 function App(props: any) {
     return (
         <div className="container">
-            <h1 className="display-1 text-center">Play Boggle</h1>
+            <h1 className="display-1 text-center">Play Chaoggle</h1>
             <div className="row">
                 <div className="col board-container">
                     <Board {...props} width={BOARD_WIDTH} height={BOARD_HEIGHT}/>

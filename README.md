@@ -1,4 +1,4 @@
-# Boggle
+# Chaoggle
 
 Boggle with a wildcard
 
@@ -28,7 +28,7 @@ npm run serve
 open http://127.0.0.1:9966
 ```
 
-Play Boggle!
+Play Chaoggle!
 
 ## Running the tests
 
