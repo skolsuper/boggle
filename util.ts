@@ -1,6 +1,7 @@
 import leven from 'leven';
 import R from 'ramda';
-import {BOARD_HEIGHT, BOARD_WIDTH} from './constants';
+
+import {BOARD_HEIGHT, BOARD_WIDTH, MAX_WORD_LENGTH} from './constants';
 
 export const range: (to: number) => number[] = R.range(0);
 
@@ -29,7 +30,7 @@ function getAdjacent(index: number): number[] {
     return adjacencyMap[index];
 }
 
-export function getAvailableMoves(path: number[], maxLength = 8) {
+export function getAvailableMoves(path: number[], maxLength = MAX_WORD_LENGTH) {
     if (R.isEmpty(path)) {
         return range(BOARD_WIDTH * BOARD_HEIGHT);
     }
@@ -49,7 +50,7 @@ function isMatch(test: string): (candidate: string) => boolean {
     return (candidate) => leven(test, candidate) <= numWildcards;
 }
 
-export function isWord(words: string[], str: string): boolean {
+function isWord(words: string[], str: string): boolean {
     return R.contains(R.toLower(str), words);
 }
 
@@ -81,7 +82,7 @@ export function getWordsMatchingPrefix(prefix: string, words: string[]): string[
  * @param {number} maxLength
  * @yields {number[]}
  */
-function* BFS(board: string, words: string[], currentPath: number[], maxLength = 8): IterableIterator<string> {
+function* BFS(board: string, words: string[], currentPath: number[], maxLength: number): IterableIterator<string> {
     const stringSoFar = pathToString(board, currentPath);
     if (currentPath.length > 2) {
         for (const word of getWords(words, stringSoFar)) {
@@ -108,7 +109,7 @@ export function pathToString(board: string, path: number[]): string {
 
 export function solve(words: string[], board: string): string[] {
     const solution = [];
-    for (const word of BFS(board, words, [])) {
+    for (const word of BFS(board, words, [], MAX_WORD_LENGTH)) {
         solution.push(word);
     }
     return R.uniq(solution);
