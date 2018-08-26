@@ -7,7 +7,7 @@ import {getLetterFromBoard} from '../util';
 export default function Cell({ availableMoves, board, index, selectCell }: { availableMoves: number[], board: string, index: number, selectCell: ActionCreator<number> }) {
     const available = R.contains(index, availableMoves);
     return (
-        <td data-available={available} onClick={() => selectCell(index)}>
+        <td className="boggle-cell" data-available={available} onClick={() => selectCell(index)}>
             {getLetterFromBoard(board, index)}
         </td>
     );
