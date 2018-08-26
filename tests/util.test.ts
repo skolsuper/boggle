@@ -18,6 +18,10 @@ describe('getWords', function () {
         const result = getWords(words, 'c*t');
         assert.deepEqual(result, ['cat', 'cot', 'cut']);
     });
+    it('should not return words of different length in case of wildcard', function () {
+        const result = getWords(words, 'cat*');
+        assert.deepEqual(result, []);
+    });
     it('should be case insensitive', function () {
         const result = getWords(words, 'C*T');
         assert.deepEqual(result, ['cat', 'cot', 'cut']);
