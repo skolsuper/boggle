@@ -11,9 +11,20 @@ import {IBoggleState} from './declarations';
 import {getAdjacent, getWords, range} from './util';
 
 /* tslint:disable-next-line:no-var-requires */
-const dictionary = require('./files/dictionary.json');
+const dictionary: { words: string[] } = require('./files/dictionary.json');
 
-const words: Set<string> = new Set(dictionary.words);
+/**
+ * A map of sets of words, keyed by the length of the words in the set
+ * @example {
+ *   3: Set<cat,dog,foo>,
+ *   4: Set<bask,card,snap>,
+ *   ...
+ * }
+ */
+const wordsByLength: { [key: number]: Set<string> } = R.map(
+    (words) => new Set(words),
+    R.groupBy((word) => word.length.toString(), dictionary.words),
+);
 
 const store = createStore(
     reducer,
@@ -46,17 +57,16 @@ function reducer(
                 return state;
             }
             const currentPath = [...state.currentPath, action.index];
-            return Object.assign({}, state, {
-                availableMoves: R.difference(getAdjacent(action.index), currentPath),
-                currentPath,
-            });
+            const availableMoves =  (currentPath.length === 8) ? // No words in dictionary longer than 8 chars
+                [] : R.difference(getAdjacent(action.index), currentPath);
+            return Object.assign({}, state, { availableMoves, currentPath });
         case SET_BOARD:
             return Object.assign({}, state, {
                 board: action.board,
                 words: [],
             });
         case SUBMIT_WORD:
-            const matchingWords = getWords(words, action.word);
+            const matchingWords = getWords(wordsByLength[action.word.length], action.word);
             return Object.assign({}, state, {
                 availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
                 currentPath: [],
