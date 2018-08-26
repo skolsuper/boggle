@@ -3,7 +3,7 @@ import { assert } from 'chai';
 
 import {getWords, getWordsMatchingPrefix, solve} from '../util';
 
-const words = ['cat', 'cast', 'cot', 'cut', 'dog', 'foo'];
+const words = ['cat', 'cast', 'cot', 'cut', 'dog', 'foo', 'srbosoxd'];
 
 describe('getWords', function () {
     it('should return single word if it exists', function () {
@@ -48,6 +48,6 @@ describe('solve', function () {
     const board = 'CAT*EAKSOBRSS*XD';
     it('should find all valid words in a board', function () {
         const solution = solve(words, board);
-        assert.deepEqual(solution, ['cat']);
+        assert.deepEqual(solution, ['cat', 'srbosoxd']);
     })
 });
