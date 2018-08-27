@@ -1,5 +1,5 @@
-import 'mocha';
 import { assert } from 'chai';
+import 'mocha';
 
 import {getWords, getWordsMatchingPrefix, solve} from '../util';
 
@@ -49,5 +49,5 @@ describe('solve', function () {
     it('should find all valid words in a board', function () {
         const solution = solve(words, board);
         assert.deepEqual(solution, ['cat', 'srbosoxd']);
-    })
+    });
 });

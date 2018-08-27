@@ -35,5 +35,5 @@ export function tick(amount: number) {
     return {
         amount,
         type: TICK,
-    }
+    };
 }

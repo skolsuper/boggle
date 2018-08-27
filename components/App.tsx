@@ -6,9 +6,9 @@ import {BOARD_HEIGHT, BOARD_WIDTH} from '../constants';
 import {IBoggleState} from '../declarations';
 
 import Board from './Board';
+import Countdown from './Countdown';
 import Selection from './Selection';
 import WordList from './WordList';
-import Countdown from "./Countdown";
 
 function App(props: any) {
     return (

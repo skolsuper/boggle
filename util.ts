@@ -62,7 +62,7 @@ export function getWords(words: string[], str: string): string[] {
     }
     const candidate = R.toLower(str);
     if (!candidate.includes('*')) {
-        return (isWord(words, candidate))? [candidate] : [];
+        return (isWord(words, candidate)) ? [candidate] : [];
     }
     const numWildcards = R.filter((char) => char === '*', Array.from(candidate)).length;
     return R.filter((word) => leven(word, candidate) <= numWildcards, Array.from(words));
