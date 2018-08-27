@@ -63,9 +63,9 @@ var react_redux_1 = require("react-redux");
 var actions_1 = require("../actions");
 var constants_1 = require("../constants");
 var Board_1 = __importDefault(require("./Board"));
+var Countdown_1 = __importDefault(require("./Countdown"));
 var Selection_1 = __importDefault(require("./Selection"));
 var WordList_1 = __importDefault(require("./WordList"));
-var Countdown_1 = __importDefault(require("./Countdown"));
 function App(props) {
     return (react_1.default.createElement("div", { className: "container" },
         react_1.default.createElement("h1", { className: "display-1 text-center" }, "Play Chaoggle"),
@@ -34962,16 +34962,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __values = (this && this.__values) || function (o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-};
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
@@ -34991,6 +34981,16 @@ var __read = (this && this.__read) || function (o, n) {
 var __spread = (this && this.__spread) || function () {
     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
     return ar;
+};
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -35071,85 +35071,53 @@ function getWordsMatchingPrefix(prefix, words) {
 exports.getWordsMatchingPrefix = getWordsMatchingPrefix;
 /**
  * Generate all the words from a board that start with the given path.
- * @param board
- * @param words
- * @param currentPath
- * @param {number} maxLength
  * @yields {string}
  */
 function BFS(board, words, currentPath, maxLength) {
-    var e_1, _a, e_2, _b, stringSoFar, _c, _d, word, e_1_1, candidateWords, nextNodes, nextPaths, nextPaths_1, nextPaths_1_1, path, e_2_1;
-    return __generator(this, function (_e) {
-        switch (_e.label) {
+    var e_1, _a, stringSoFar, candidateWords, nextNodes, nextPaths, nextPaths_1, nextPaths_1_1, path, e_1_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 stringSoFar = pathToString(board, currentPath);
-                if (!(currentPath.length > 2)) return [3 /*break*/, 8];
-                _e.label = 1;
+                if (!(currentPath.length > 2)) return [3 /*break*/, 2];
+                return [5 /*yield**/, __values(getWords(words, stringSoFar))];
             case 1:
-                _e.trys.push([1, 6, 7, 8]);
-                _c = __values(getWords(words, stringSoFar)), _d = _c.next();
-                _e.label = 2;
+                _b.sent();
+                _b.label = 2;
             case 2:
-                if (!!_d.done) return [3 /*break*/, 5];
-                word = _d.value;
-                return [4 /*yield*/, word];
-            case 3:
-                _e.sent();
-                _e.label = 4;
-            case 4:
-                _d = _c.next();
-                return [3 /*break*/, 2];
-            case 5: return [3 /*break*/, 8];
-            case 6:
-                e_1_1 = _e.sent();
-                e_1 = { error: e_1_1 };
-                return [3 /*break*/, 8];
-            case 7:
-                try {
-                    if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
-                }
-                finally { if (e_1) throw e_1.error; }
-                return [7 /*endfinally*/];
-            case 8:
                 candidateWords = getWordsMatchingPrefix(stringSoFar, words);
                 if (candidateWords.length === 0) {
                     return [2 /*return*/];
                 }
-                if (!isWord(words, stringSoFar)) return [3 /*break*/, 10];
-                return [4 /*yield*/, stringSoFar];
-            case 9:
-                _e.sent();
-                _e.label = 10;
-            case 10:
                 nextNodes = getAvailableMoves(currentPath, maxLength);
                 nextPaths = nextNodes.map(function (index) { return __spread(currentPath, [index]); });
-                _e.label = 11;
-            case 11:
-                _e.trys.push([11, 16, 17, 18]);
+                _b.label = 3;
+            case 3:
+                _b.trys.push([3, 8, 9, 10]);
                 nextPaths_1 = __values(nextPaths), nextPaths_1_1 = nextPaths_1.next();
-                _e.label = 12;
-            case 12:
-                if (!!nextPaths_1_1.done) return [3 /*break*/, 15];
+                _b.label = 4;
+            case 4:
+                if (!!nextPaths_1_1.done) return [3 /*break*/, 7];
                 path = nextPaths_1_1.value;
                 return [5 /*yield**/, __values(BFS(board, candidateWords, path, maxLength))];
-            case 13:
-                _e.sent();
-                _e.label = 14;
-            case 14:
+            case 5:
+                _b.sent();
+                _b.label = 6;
+            case 6:
                 nextPaths_1_1 = nextPaths_1.next();
-                return [3 /*break*/, 12];
-            case 15: return [3 /*break*/, 18];
-            case 16:
-                e_2_1 = _e.sent();
-                e_2 = { error: e_2_1 };
-                return [3 /*break*/, 18];
-            case 17:
+                return [3 /*break*/, 4];
+            case 7: return [3 /*break*/, 10];
+            case 8:
+                e_1_1 = _b.sent();
+                e_1 = { error: e_1_1 };
+                return [3 /*break*/, 10];
+            case 9:
                 try {
-                    if (nextPaths_1_1 && !nextPaths_1_1.done && (_b = nextPaths_1.return)) _b.call(nextPaths_1);
+                    if (nextPaths_1_1 && !nextPaths_1_1.done && (_a = nextPaths_1.return)) _a.call(nextPaths_1);
                 }
-                finally { if (e_2) throw e_2.error; }
+                finally { if (e_1) throw e_1.error; }
                 return [7 /*endfinally*/];
-            case 18: return [2 /*return*/];
+            case 10: return [2 /*return*/];
         }
     });
 }
@@ -35158,7 +35126,7 @@ function pathToString(board, path) {
 }
 exports.pathToString = pathToString;
 function solve(words, board) {
-    var e_3, _a;
+    var e_2, _a;
     var solution = [];
     try {
         for (var _b = __values(BFS(board, words, [], constants_1.MAX_WORD_LENGTH)), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -35166,12 +35134,12 @@ function solve(words, board) {
             solution.push(word);
         }
     }
-    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
     finally {
         try {
             if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
         }
-        finally { if (e_3) throw e_3.error; }
+        finally { if (e_2) throw e_2.error; }
     }
     return removeEmpty(ramda_1.default.uniq(solution));
 }

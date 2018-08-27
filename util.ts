@@ -83,16 +83,11 @@ export function getWordsMatchingPrefix(prefix: string, words: string[]): string[
 function* BFS(board: string, words: string[], currentPath: number[], maxLength: number): IterableIterator<string> {
     const stringSoFar = pathToString(board, currentPath);
     if (currentPath.length > 2) {
-        for (const word of getWords(words, stringSoFar)) {
-            yield word;
-        }
+        yield* getWords(words, stringSoFar);
     }
     const candidateWords = getWordsMatchingPrefix(stringSoFar, words);
     if (candidateWords.length === 0) {
         return;
-    }
-    if (isWord(words, stringSoFar)) {
-        yield stringSoFar;
     }
     const nextNodes = getAvailableMoves(currentPath, maxLength);
     const nextPaths = nextNodes.map(index => [...currentPath, index]);
