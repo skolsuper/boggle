@@ -7,13 +7,16 @@
     "build": "tsc -p . && browserify app/index.js -o bundle.js",
     "lint": "tslint -p .",
     "serve": "beefy app/index.js:bundle.js --live",
-    "start": "concurrently \"npm run watch\" \"npm run serve\"",
+    "start:server": "concurrently \"npm run watch\" \"nodemon -w server ./server/index.js\"",
+    "start:app": "concurrently \"npm run watch\" \"npm run serve\"",
+    "start": "concurrently \"npm run start:app\" \"npm run start:server\"",
     "test": "npm run build & mocha tests/*.test.js",
     "watch": "tsc -p . -w"
   },
   "author": "James Keys",
   "license": "UNLICENSED",
   "dependencies": {
+    "hapi": "^17.5.4",
     "leven": "^2.1.0",
     "ramda": "^0.25.0",
     "react": "^16.4.2",
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
+    "@types/hapi": "^17.0.19",
     "@types/leven": "^2.1.1",
     "@types/mocha": "^5.2.5",
     "@types/ramda": "^0.25.36",
@@ -34,6 +38,7 @@
     "chai": "^4.1.2",
     "concurrently": "^4.0.0",
     "mocha": "^5.2.0",
+    "nodemon": "^1.18.4",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1",
     "watchify": "^3.11.0"
