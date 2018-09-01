@@ -1,6 +1,6 @@
 # Chaoggle
 
-Boggle with a wildcard.  Play Chaoggle at [skolsuper.github.io/boggle](https://skolsuper.github.io/boggle), or click "Solve" to let the computer do it
+Boggle with a wildcard.  Play Chaoggle at [chaoggle.herokuapp.com/](https://chaoggle.herokuapp.com/), or click "Solve" to let the computer do it
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ git push heroku master
 * Redux
 * Typescript
 * Browserify
-* Github pages
+* Heroku
 
 ## Acknowledgments
 
