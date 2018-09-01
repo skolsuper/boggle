@@ -24,8 +24,8 @@ npm install
 Start a dev server with npm serve.  This compiles typescript and JSX to vanilla JS, browserifies the result, and starts a web server for the local directory
 
 ```bash
-npm run serve
-open http://127.0.0.1:9966
+npm run dev
+open http://127.0.0.1:3000
 ```
 
 Play Chaoggle!
@@ -47,11 +47,11 @@ npm run lint
 
 ## Deployment
 
-The site is hosted on Github pages.  To deploy, update bundle.js and push to master:
+The site is hosted on Heroku.  To deploy, update bundle.js and push to master:
 
 ```bash
 npm run build
-git push
+git push heroku master
 ```
 
 ## Built With

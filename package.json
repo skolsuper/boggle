@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p . && browserify app/index.js | uglifyjs > bundle.js",
+    "dev": "concurrently \"npm run watch\" \"npm run start:app\" \"npm run start:server\"",
     "lint": "tslint -p .",
     "serve": "beefy app/index.js:bundle.js --live --plugin tinyify",
     "start:server": "nodemon -w server ./server/index.js",
     "start:app": "npm run serve",
-    "start": "concurrently \"npm run watch\" \"npm run start:app\" \"npm run start:server\"",
-    "test": "npm run build & mocha tests/*.test.js",
+    "start": "npm run build && node ./server/index.js",
+    "test": "npm run build && mocha tests/*.test.js",
     "watch": "tsc -p . -w"
   },
   "author": "James Keys",
