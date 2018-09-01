@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/hapi": "^17.0.19",
+    "@types/inert": "^5.1.1",
     "@types/leven": "^2.1.1",
     "@types/mocha": "^5.2.5",
     "@types/ramda": "^0.25.36",
