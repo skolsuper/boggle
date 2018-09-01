@@ -6,8 +6,17 @@ const server = new Hapi.Server({
     host: '0.0.0.0',
 });
 
+setRoutes(server);
+
 const init = async () => {
-    setRoutes(server);
+    await server.register({
+        plugin: require('hapi-pino'),
+        options: {
+            prettyPrint: false,
+            logEvents: ['response']
+        }
+    });
+    await server.register(require('inert'));
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 };
