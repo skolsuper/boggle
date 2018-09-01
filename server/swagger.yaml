@@ -1,0 +1,102 @@
+swagger: "2.0"
+info:
+  description: "API for playing Chaoggle (Boggle with wildcards)"
+  version: "0.0.1"
+  title: "Chaoggle"
+basePath: "/api"
+schemes:
+- "https"
+- "http"
+paths:
+  /boards:
+    post:
+      summary: "Start a new game"
+      description: "Generate a random board"
+      operationId: "startGame"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "New board"
+          schema:
+            $ref: '#/definitions/NewBoardResponse'
+  /boards/{board}:
+    get:
+      summary: "Validate word"
+      description: "Checks a path on a board to see if it is a valid word"
+      operationId: "validateWord"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "board"
+        in: "path"
+        description: "the board as a 16-char string"
+        required: true
+        type: "string"
+      - name: "path"
+        in: "query"
+        description: "List of square IDs (0-15 on a 4x4 board)"
+        required: true
+        type: "array"
+        items:
+          type: "number"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ValidateWordResponse"
+        400:
+          description: "Bad Request"
+  /boards/{board}/solution:
+    get:
+      summary: "Solve board"
+      description: "Returns all possible words for a given board"
+      operationId: "getSolution"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "board"
+        in: "path"
+        description: "the board as a 16-char string"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/GetSolutionResponse"
+        400:
+          description: "Bad Request"
+
+definitions:
+  Board:
+    type: "string"
+    description: "16 characters A-Z or * (wildcard), representing a 4x4 board"
+  NewBoardResponse:
+    type: "object"
+    properties:
+      board:
+        $ref: "#/definitions/Board"
+  ValidateWordResponse:
+    type: "object"
+    properties:
+      attempt:
+        description: "The characters corresponding to the given path on this board"
+        type: "string"
+      board:
+        $ref: "#/definitions/Board"
+      words:
+        type: "array"
+        description: "Array of valid words on this board for the given path"
+        items:
+          type: "string"
+  GetSolutionResponse:
+    type: "object"
+    properties:
+      board:
+        $ref: "#/definitions/Board"
+      words:
+        type: "array"
+        description: "Array of all the valid words on this board"
+        items:
+          type: "string"
