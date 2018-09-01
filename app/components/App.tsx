@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {selectCell, solvePuzzle, submitWord} from '../actions';
-import {BOARD_HEIGHT, BOARD_WIDTH} from '../constants';
+import {BOARD_HEIGHT, BOARD_WIDTH} from '../../constants';
 import {IBoggleState} from '../declarations';
 
 import Board from './Board';

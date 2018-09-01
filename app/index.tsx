@@ -6,12 +6,12 @@ import {createStore} from 'redux';
 
 import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
 import App from './components/App';
-import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from './constants';
+import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from '../constants';
 import {IBoggleState} from './declarations';
-import {getAvailableMoves, getWords, range, solve} from './util';
+import {getAvailableMoves, getWords, range, solve} from '../util';
 
 /* tslint:disable-next-line:no-var-requires */
-const dictionary: { words: string[] } = require('./files/dictionary.json');
+const dictionary: { words: string[] } = require('../files/dictionary.json');
 
 /**
  * A map of sets of words, keyed by the length of the words in the set

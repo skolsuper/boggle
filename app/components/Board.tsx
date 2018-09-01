@@ -2,7 +2,7 @@ import R from 'ramda';
 import React from 'react';
 import {ActionCreator} from 'redux';
 
-import {range} from '../util';
+import {range} from '../../util';
 
 import Row from './Row';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActionCreator} from 'redux';
 
-import {pathToString} from '../util';
+import {pathToString} from '../../util';
 
 export default function Selection(props: {board: string, currentPath: number[], submitWord: ActionCreator<string>}) {
     const {board, currentPath, submitWord} = props;
