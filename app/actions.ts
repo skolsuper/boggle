@@ -1,6 +1,7 @@
 export const ADD_WORDS = 'ADD_WORDS';
 export const SELECT_CELL = 'SELECT_CELL';
 export const SET_BOARD = 'SET_BOARD';
+export const SET_SOLUTION = 'SET_SOLUTION';
 export const SOLVE_PUZZLE = 'SOLVE_PUZZLE';
 export const SUBMIT_WORD = 'SUBMIT_WORD';
 export const TICK = 'TICK';
@@ -12,6 +13,13 @@ export function addWords(words: string[]) {
     };
 }
 
+export function selectCell(index: number) {
+    return {
+        index,
+        type: SELECT_CELL,
+    };
+}
+
 export function setBoard(board: string) {
     return {
         board,
@@ -19,10 +27,10 @@ export function setBoard(board: string) {
     };
 }
 
-export function selectCell(index: number) {
+export function setSolution(words: string[]) {
     return {
-        index,
-        type: SELECT_CELL,
+        type: SET_SOLUTION,
+        words,
     };
 }
 

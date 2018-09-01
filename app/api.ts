@@ -1,7 +1,7 @@
 import R from 'ramda';
 import {Store} from 'redux';
 
-import {addWords, setBoard} from './actions';
+import {addWords, setBoard, setSolution} from './actions';
 
 export class BoggleApi {
 
@@ -45,5 +45,10 @@ export class BoggleApi {
         if (!this.links['get-solution']) {
             throw new Error('I don\'t know how to validate a word yet');
         }
+        const response = await fetch(this.links['get-solution'], {
+            mode: 'cors',
+        });
+        const { words } = await response.json();
+        this.store.dispatch(setSolution(words));
     }
 }

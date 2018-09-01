@@ -4,15 +4,12 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {ADD_WORDS, SELECT_CELL, SET_BOARD, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
+import {ADD_WORDS, SELECT_CELL, SET_BOARD, SET_SOLUTION, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
 import {BoggleApi} from './api';
 import App from './components/App';
-import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from '../constants';
+import {GAME_TIME_MS} from '../constants';
 import {IBoggleState} from './declarations';
-import {getAvailableMoves, range, solve} from '../util';
-
-/* tslint:disable-next-line:no-var-requires */
-const dictionary: { words: string[] } = require('../files/dictionary.json');
+import {getAvailableMoves} from '../util';
 
 const store = createStore(
     reducer,
@@ -36,7 +33,7 @@ api.init()
 
 function reducer(
     state: IBoggleState = {
-        availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
+        availableMoves: getAvailableMoves([]),
         board: '****************',
         currentPath: [],
         gameOver: true,
@@ -66,28 +63,34 @@ function reducer(
                 timeRemaining: GAME_TIME_MS,
                 words: [],
             });
+        case SET_SOLUTION:
+            return Object.assign({}, state, {
+                solution: action.words,
+            });
         case SOLVE_PUZZLE:
             clearInterval(countdown);
+            api.getSolution()
+                .catch((err) => console.error('Unable to solve puzzle', err));
             return Object.assign({}, state, {
                 availableMoves: [],
                 gameOver: true,
-                solution: solve(dictionary.words, state.board),
             });
         case SUBMIT_WORD:
             api.validateWord(state.currentPath)
                 .catch((err) => console.error('Unable to validate word', err));
             return Object.assign({}, state, {
-                availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
+                availableMoves: getAvailableMoves([]),
                 currentPath: [],
             });
         case TICK:
             const timeRemaining = state.timeRemaining - action.amount;
             if (timeRemaining <= 0) {
                 clearInterval(countdown);
+                api.getSolution()
+                    .catch((err) => console.error('Unable to solve puzzle', err));
                 return Object.assign({}, state, {
                     availableMoves: [],
                     gameOver: true,
-                    solution: solve(dictionary.words, state.board),
                     timeRemaining,
                 });
             }
