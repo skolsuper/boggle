@@ -1,7 +1,13 @@
-import { Server } from 'hapi';
+import { Request, RequestQuery, Server } from 'hapi';
+import R from 'ramda';
+
+import { getWords, pathToString, solve } from '../util';
+
+/* tslint:disable-next-line:no-var-requires */
+const dictionary: { words: string[] } = require('../files/dictionary.json');
 
 export default function setRoutes(server: Server): void {
-    const apiBaseUrl = server.info.uri;
+    const apiBaseUrl = `${server.info.uri}/api`;
     server.route({
         method: 'GET',
         path: '/',
@@ -36,10 +42,38 @@ export default function setRoutes(server: Server): void {
         handler: (request, h) => {
             const board = 'TAP*EAKSOBRSS*XD';
             const links = {
-                'validate-word': `${apiBaseUrl}/boards/${board}/{path}`,
-                'get-solution': `${apiBaseUrl}/boards/${board}`,
+                'validate-word': `${apiBaseUrl}/boards/${board}?path={path}`,
+                'get-solution': `${apiBaseUrl}/boards/${board}/solution`,
             };
             return { board, links };
         },
     });
+    server.route({
+        method: 'GET',
+        path: '/api/boards/{board}/solution',
+        handler: (request, h) => {
+            const { board } = request.params;
+            const solution = solve(dictionary.words, board);
+            return { board, words: solution };
+        },
+    });
+    server.route({
+        method: 'GET',
+        path: '/api/boards/{board}',
+        handler: (request, h) => {
+            const { board } = request.params;
+            const path = getPathFromReq(request);
+            const attempt = pathToString(board, path);
+            const words = getWords(dictionary.words, attempt);
+            return { attempt, board, words };
+        },
+    });
+}
+
+function getPathFromReq(request: Request): number[] {
+    let { path } = request.query as RequestQuery;
+    if (typeof path === 'string') {
+        path = path.split(',');
+    }
+    return R.map(el => parseInt(el, 10), path);
 }
