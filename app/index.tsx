@@ -4,7 +4,8 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, setBoard, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
+import {SELECT_CELL, SET_BOARD, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
+import {BoggleApi} from './api';
 import App from './components/App';
 import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from '../constants';
 import {IBoggleState} from './declarations';
@@ -28,7 +29,7 @@ const store = createStore(
     (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-store.dispatch(setBoard('TAP*EAKSOBRSS*XD'));
+const api = new BoggleApi(`http://127.0.0.1:3000/api`, store);
 
 render(
     <Provider store={store}>
@@ -37,14 +38,17 @@ render(
     document.getElementById('root'),
 );
 
-const countdown = setInterval(() => store.dispatch(tick(1000)), 1000);
+let countdown: NodeJS.Timer;
+api.init()
+    .then(() => api.startGame())
+    .then(() => countdown = setInterval(() => store.dispatch(tick(1000)), 1000));
 
 function reducer(
     state: IBoggleState = {
         availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
         board: '****************',
         currentPath: [],
-        gameOver: false,
+        gameOver: true,
         solution: [],
         timeRemaining: GAME_TIME_MS,
         words: [],
@@ -52,13 +56,9 @@ function reducer(
     action: any): IBoggleState {
     switch (action.type) {
         case SELECT_CELL:
-            if (state.gameOver) {
-                return state;
-            }
-            if (R.contains(action.index, state.currentPath)) {
-                return state;
-            }
-            if (!R.contains(action.index, state.availableMoves)) {
+            if (state.gameOver ||
+                R.contains(action.index, state.currentPath) ||
+                !R.contains(action.index, state.availableMoves)) {
                 return state;
             }
             const currentPath = [...state.currentPath, action.index];
@@ -67,6 +67,7 @@ function reducer(
         case SET_BOARD:
             return Object.assign({}, state, {
                 board: action.board,
+                gameOver: false,
                 timeRemaining: GAME_TIME_MS,
                 words: [],
             });

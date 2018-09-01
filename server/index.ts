@@ -4,6 +4,9 @@ import setRoutes from './router';
 const server = new Hapi.Server({
     port: 3000,
     host: '0.0.0.0',
+    routes: {
+        cors: true,
+    },
 });
 
 setRoutes(server);

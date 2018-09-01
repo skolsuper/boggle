@@ -19,7 +19,7 @@ paths:
         200:
           description: "New board"
           schema:
-            $ref: '#/definitions/NewBoardResponse'
+            $ref: '#/definitions/StartGameResponse'
   /boards/{board}:
     get:
       summary: "Validate word"
@@ -72,7 +72,7 @@ definitions:
   Board:
     type: "string"
     description: "16 characters A-Z or * (wildcard), representing a 4x4 board"
-  NewBoardResponse:
+  StartGameResponse:
     type: "object"
     properties:
       board:

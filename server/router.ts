@@ -27,7 +27,7 @@ export default function setRoutes(server: Server): void {
 
     server.route({
         method: 'GET',
-        path: '/api/',
+        path: '/api',
         handler: (request, h) => {
             return {
                 links: {
