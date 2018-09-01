@@ -16,7 +16,7 @@ const store = createStore(
     (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-const api = new BoggleApi(`http://127.0.0.1:3000/api`, store);
+const api = new BoggleApi(`${window.location}/api`, store);
 
 render(
     <Provider store={store}>

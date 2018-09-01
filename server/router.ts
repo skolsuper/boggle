@@ -8,7 +8,6 @@ import { getWords, solve } from './lib/solver';
 const dictionary: { words: string[] } = require('../files/dictionary.json');
 
 export default function setRoutes(server: Server): void {
-    const apiBaseUrl = `${server.info.uri}/api`;
     server.route({
         method: 'GET',
         path: '/',
@@ -32,7 +31,7 @@ export default function setRoutes(server: Server): void {
         handler: (request, h) => {
             return {
                 links: {
-                    'start-game': `${apiBaseUrl}/boards`,
+                    'start-game': `${getBaseUrlFromReq(request)}/boards`,
                 },
             };
         },
@@ -43,8 +42,8 @@ export default function setRoutes(server: Server): void {
         handler: (request, h) => {
             const board = 'TAP*EAKSOBRSS*XD';
             const links = {
-                'validate-word': `${apiBaseUrl}/boards/${board}`,
-                'get-solution': `${apiBaseUrl}/boards/${board}/solution`,
+                'validate-word': `${getBaseUrlFromReq(request)}/boards/${board}`,
+                'get-solution': `${getBaseUrlFromReq(request)}/boards/${board}/solution`,
             };
             return { board, links };
         },
@@ -78,4 +77,8 @@ function getPathFromReq(request: Request): number[] {
         path = path.split(',');
     }
     return R.map(el => parseInt(el, 10), path);
+}
+
+function getBaseUrlFromReq(request: Request): string {
+    return `${request.info.host}/api`
 }
