@@ -80,5 +80,5 @@ function getPathFromReq(request: Request): number[] {
 }
 
 function getBaseUrlFromReq(request: Request): string {
-    return `http://${request.info.host}/api`
+    return `${request.headers['x-forwarded-proto'] || 'http'}://${request.info.host}/api`
 }
