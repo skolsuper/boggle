@@ -1,7 +1,8 @@
 import { Request, RequestQuery, Server } from 'hapi';
 import R from 'ramda';
 
-import { getWords, pathToString, solve } from '../util';
+import { pathToString } from '../util';
+import { getWords, solve } from './lib/solver';
 
 /* tslint:disable-next-line:no-var-requires */
 const dictionary: { words: string[] } = require('../files/dictionary.json');

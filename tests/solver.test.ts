@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import 'mocha';
 
-import {getWords, getWordsMatchingPrefix, solve} from '../util';
+import {getWords, getWordsMatchingPrefix, solve} from "../server/lib/solver";
 
 const words = ['cat', 'cast', 'cot', 'cut', 'dog', 'foo', 'srbosoxd'];
 
