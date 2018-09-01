@@ -80,5 +80,5 @@ function getPathFromReq(request: Request): number[] {
 }
 
 function getBaseUrlFromReq(request: Request): string {
-    return `${request.info.host}/api`
+    return `http://${request.info.host}/api`
 }
