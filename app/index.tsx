@@ -4,25 +4,15 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
-import {SELECT_CELL, SET_BOARD, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
+import {ADD_WORDS, SELECT_CELL, SET_BOARD, SOLVE_PUZZLE, SUBMIT_WORD, TICK, tick} from './actions';
 import {BoggleApi} from './api';
 import App from './components/App';
 import {BOARD_HEIGHT, BOARD_WIDTH, GAME_TIME_MS} from '../constants';
 import {IBoggleState} from './declarations';
-import {getAvailableMoves, getWords, range, solve} from '../util';
+import {getAvailableMoves, range, solve} from '../util';
 
 /* tslint:disable-next-line:no-var-requires */
 const dictionary: { words: string[] } = require('../files/dictionary.json');
-
-/**
- * A map of sets of words, keyed by the length of the words in the set
- * @example {
- *   3: cat,dog,foo
- *   4: bask,card,snap
- *   ...
- * }
- */
-const wordsByLength = R.groupBy(word => word.length.toString(), dictionary.words);
 
 const store = createStore(
     reducer,
@@ -41,7 +31,8 @@ render(
 let countdown: NodeJS.Timer;
 api.init()
     .then(() => api.startGame())
-    .then(() => countdown = setInterval(() => store.dispatch(tick(1000)), 1000));
+    .then(() => countdown = setInterval(() => store.dispatch(tick(1000)), 1000))
+    .catch((err) => console.error('Failed to start game', err));
 
 function reducer(
     state: IBoggleState = {
@@ -55,6 +46,10 @@ function reducer(
     },
     action: any): IBoggleState {
     switch (action.type) {
+        case ADD_WORDS:
+            return Object.assign({}, state, {
+                words: R.concat(state.words, action.words),
+            });
         case SELECT_CELL:
             if (state.gameOver ||
                 R.contains(action.index, state.currentPath) ||
@@ -79,11 +74,11 @@ function reducer(
                 solution: solve(dictionary.words, state.board),
             });
         case SUBMIT_WORD:
-            const matchingWords = getWords(wordsByLength[action.word.length], action.word);
+            api.validateWord(state.currentPath)
+                .catch((err) => console.error('Unable to validate word', err));
             return Object.assign({}, state, {
                 availableMoves: range(BOARD_WIDTH * BOARD_HEIGHT),
                 currentPath: [],
-                words: R.uniq([...state.words, ...matchingWords]),
             });
         case TICK:
             const timeRemaining = state.timeRemaining - action.amount;

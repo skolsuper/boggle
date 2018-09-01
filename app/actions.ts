@@ -1,8 +1,16 @@
+export const ADD_WORDS = 'ADD_WORDS';
 export const SELECT_CELL = 'SELECT_CELL';
 export const SET_BOARD = 'SET_BOARD';
 export const SOLVE_PUZZLE = 'SOLVE_PUZZLE';
 export const SUBMIT_WORD = 'SUBMIT_WORD';
 export const TICK = 'TICK';
+
+export function addWords(words: string[]) {
+    return {
+        type: ADD_WORDS,
+        words,
+    };
+}
 
 export function setBoard(board: string) {
     return {

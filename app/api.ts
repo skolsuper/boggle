@@ -1,6 +1,7 @@
+import R from 'ramda';
 import {Store} from 'redux';
 
-import {setBoard} from './actions';
+import {addWords, setBoard} from './actions';
 
 export class BoggleApi {
 
@@ -15,7 +16,7 @@ export class BoggleApi {
         this.links = links;
     }
 
-    public async startGame() {
+    public async startGame(): Promise<void> {
         if (!this.links['start-game']) {
             throw new Error('I don\'t know how to start a game yet');
         }
@@ -26,5 +27,23 @@ export class BoggleApi {
         const { board, links } = await response.json();
         this.links = { ...this.links, ...links };
         this.store.dispatch(setBoard(board));
+    }
+
+    public async validateWord(path: number[]): Promise<void> {
+        if (!this.links['validate-word']) {
+            throw new Error('I don\'t know how to validate a word yet');
+        }
+        const query = `path=${R.join(',', path)}`;
+        const response = await fetch(`${this.links['validate-word']}?${query}`, {
+            mode: 'cors',
+        });
+        const { words } = await response.json();
+        this.store.dispatch(addWords(words));
+    }
+
+    public async getSolution(): Promise<void> {
+        if (!this.links['get-solution']) {
+            throw new Error('I don\'t know how to validate a word yet');
+        }
     }
 }

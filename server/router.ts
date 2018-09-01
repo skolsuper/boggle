@@ -42,7 +42,7 @@ export default function setRoutes(server: Server): void {
         handler: (request, h) => {
             const board = 'TAP*EAKSOBRSS*XD';
             const links = {
-                'validate-word': `${apiBaseUrl}/boards/${board}?path={path}`,
+                'validate-word': `${apiBaseUrl}/boards/${board}`,
                 'get-solution': `${apiBaseUrl}/boards/${board}/solution`,
             };
             return { board, links };
@@ -64,7 +64,8 @@ export default function setRoutes(server: Server): void {
             const { board } = request.params;
             const path = getPathFromReq(request);
             const attempt = pathToString(board, path);
-            const words = getWords(dictionary.words, attempt);
+            const candidateWords = dictionary.words.filter(word => word.length === attempt.length);
+            const words = getWords(candidateWords, attempt);
             return { attempt, board, words };
         },
     });
